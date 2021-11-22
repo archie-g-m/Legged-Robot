@@ -30,3 +30,9 @@ bool readFloat(float *p) { return readNum(p, 4); }
 bool readInt16(uint16_t *p) { return readNum(p, 2); }
 
 bool endl() { return (Serial.peek() == '\n'); }
+
+void printBits(uint64_t data, uint8_t size){
+    for (uint8_t i = 0; i < size; i++){
+        Serial.printf("%d ", (data >> i) & 1);
+    }
+}

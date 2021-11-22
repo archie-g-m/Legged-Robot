@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define TIMEOUT (500) // timemout duration in ms
+#define TIMEOUT (250) // timemout duration in ms
 
 void waitForByte();
 
@@ -13,3 +13,5 @@ bool readInt16(uint16_t* p);
 bool readNum(void* p, uint8_t size);
 
 bool endl();
+
+void printBits(uint64_t data, uint8_t size);
