@@ -28,42 +28,52 @@ void loop() {
         cmdByte = Serial.read();
 
         // say what you got:
-        Serial.print("I received: ");
-        Serial.print(cmdByte, DEC);
+        Serial.printf("I received: %d | ", cmdByte);
 
         switch (cmdByte) {
-            case CMD_WRITE_RAW:
-                Serial.println(" | CMD: Write RAW, waiting for data...");
+            case CMD_WRITE_DEG:
+                Serial.println("CMD: Write DEG, waiting for data...");
                 while (!endl()) {
-                    waitForByte();
-                    uint8_t servoNum = Serial.read() - 48;
-                    Serial.printf("Setting Servo %d to ...", servoNum);
-                    uint16_t servoVal;
-                    // readInt16(&servoVal);
-                    char numbers[5];
-                    numbers[4] = '\0';
+                    servoval_t data = readVal();
 
-                    for (int i = 0; i < 4; i++) {
-                        waitForByte();
-                        numbers[i] = Serial.read();
-                    }
-
-                    servoVal = atoi(numbers);
-
-                    Serial.printf(" RAW 0x%X\n", servoVal);
-                    servo[servoNum].write(servoVal);
+                    Serial.printf(" RAW 0x%X\n", data.value);
+                    servo[data.servo].write(data.value);
                 }
+                break;
+            case CMD_WRITE_US:
+                Serial.println("CMD: Write us, waiting for data...");
+                while (!endl()) {
+                    servoval_t data = readVal();
+
+                    Serial.printf(" %d us\n", data.value);
+                    servo[data.servo].writeMicroseconds(data.value);
+                }
+                break;
+            case CMD_WRITE_MDEG:
+                Serial.println("CMD: Write mDeg, waiting for data...");
+                while (!endl()) {
+                    servoval_t data = readVal();
+
+                    float percent = data.value / 180000;
+                    uint16_t us = (percent * (2400 - 544)) + 544;
+
+                    Serial.printf(" %f degs\n", percent * 180);
+                    servo[data.servo].writeMicroseconds(us);
+                }
+                break;
+                
             default:
                 Serial.print(cmdByte);
-                Serial.println(" not a recognized command");
+                Serial.println("... not a recognized command");
         }
     }
     if (Serial1.available()) {
         uint32_t start = millis();
 
         while (Serial1.available() < 5) {
-            if (millis() - start > TIMEOUT){
-                Serial.printf("Serial 1 timout with %d bytes", Serial.available());
+            if (millis() - start > TIMEOUT) {
+                Serial.printf("Serial 1 timout with %d bytes",
+                              Serial.available());
                 return;
             }
         }
@@ -80,19 +90,3 @@ void loop() {
         Serial.printf("Touch Detected at (%d, %d)\n", xData, yData);
     }
 }
-
-void writeRaw(uint16_t servo, uint16_t value) {}
-
-uint16_t processValue(uint16_t value) { return 1; }
-
-void read() {}
-
-// void calibrate() { for (uint16_t i = 0; i < NUM_LINKS) }
-
-// void recv(void *buffer, uint8_t size) {
-//     for (uint8_t i = 0; i < size; i) {
-//         while (!Serial.available()) {
-//         }
-//         *buffer = Serial.read();
-//     }
-// }
