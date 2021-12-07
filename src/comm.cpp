@@ -57,7 +57,7 @@ uint16_t readASCII() {
 
 bool endl() {
     // Serial.println("endl?");
-    waitForByte();
+    // waitForByte();
     // Serial.printf("%s\n", Serial.peek() == '\n' ? "yup" : "nope");
     return (Serial.peek() == '\n');
 }
