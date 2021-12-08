@@ -2,6 +2,8 @@
 #include <Servo.h>
 // #include <SoftwareSerial.h>
 
+
+#include "invkine.h"
 #include "comm.h"
 #include "config.h"
 #include "touch.h"
@@ -13,9 +15,9 @@ int pin[NUM_LINKS] = {7, 9, 10, 11, 12, 13};
 
 // SoftwareSerial touch(0,1);
 
-void setup() {
+void ik_setup() {
     Serial.begin(115200);  // opens serial port, sets data rate to 115200 bps
-    Serial1.begin(9600);
+    setupTouch();
     for (int i = 0; i < NUM_LINKS; i++) {
         servo[i].attach(pin[i] /*, MIN_BAND, MAX_BAND*/);
     }
@@ -67,26 +69,6 @@ void loop() {
                 Serial.println("... not a recognized command");
         }
     }
-    if (Serial1.available()) {
-        uint32_t start = millis();
 
-        while (Serial1.available() < 5) {
-            if (millis() - start > TIMEOUT) {
-                Serial.printf("Serial 1 timout with %d bytes",
-                              Serial.available());
-                return;
-            }
-        }
-
-        uint8_t packet[5];
-
-        for (uint8_t i = 0; i < 5; i++) {
-            packet[i] = Serial1.read();
-        }
-
-        uint16_t xData = (packet[2] << 8) | packet[1];
-        uint16_t yData = (packet[4] << 8) | packet[3];
-
-        Serial.printf("Touch Detected at (%d, %d)\n", xData, yData);
-    }
+    checkTouch();
 }

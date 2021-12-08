@@ -19,3 +19,7 @@ typedef struct coord_t {
 #define STATUS_TIMEOUT (0x04)       // Packet time out
 #define STATUS_EEPARAMS_ERR (0x05)  // Error reading EEPROM parameters
 #define STATUS_CAL_CANCEL (0xFC)    // Calibration sequence cancelled
+
+
+coord_t setupTouch();
+coord_t checkTouch();
