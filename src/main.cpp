@@ -15,7 +15,7 @@ int pin[NUM_LINKS] = {7, 9, 10, 11, 12, 13};
 
 // SoftwareSerial touch(0,1);
 
-void ik_setup() {
+void setup() {
     Serial.begin(115200);  // opens serial port, sets data rate to 115200 bps
     setupTouch();
     for (int i = 0; i < NUM_LINKS; i++) {
@@ -71,4 +71,10 @@ void loop() {
     }
 
     checkTouch();
+
+    invkine_setup();
+
+    fvector servo_d(NUM_LINKS);
+    servo_d = invKine(5,5);
+    Serial.printf("Servo Angles:\n 1: %d\n 2: %d\n 3: %d\n 4: %d\n 5: %d\n 6: %d\n", servo_d[0], servo_d[1], servo_d[2], servo_d[3], servo_d[4], servo_d[5]);
 }
