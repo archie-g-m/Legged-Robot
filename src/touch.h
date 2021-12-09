@@ -4,6 +4,8 @@ typedef struct coord_t {
     uint16_t x, y;
 } coord_t;
 
+extern coord_t touchPos;
+
 #define CMD_TOUCH_ENABLE (0x12)     // Enable TOUCH reporting
 #define CMD_TOUCH_DISABLE (0x13)    // Disable TOUCH reporting
 #define CMD_CALIBRATE (0x14)        // Execute Calibrate routine
@@ -21,5 +23,5 @@ typedef struct coord_t {
 #define STATUS_CAL_CANCEL (0xFC)    // Calibration sequence cancelled
 
 
-coord_t setupTouch();
-coord_t checkTouch();
+void setupTouch();
+bool checkTouch();

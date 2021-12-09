@@ -1,10 +1,11 @@
 #ifndef __INVKINE_H
 #define __INVKINE_H
 
-#include <math.h>
+#include <cmath>
 #include <matrix_uC.h>
 
 #define NUM_LINKS (6)
+
 
 const float HORN_LEN = 1.5;  // Length of servo horns (mm)
 const float LINK_LEN = 115;  // Length of links (mm)

@@ -1,16 +1,18 @@
 #include <Arduino.h>
 
-#define TIMEOUT (250) // timemout duration in ms
+#define TIMEOUT (250)  // timemout duration in ms
 
 #define USE_ASCII (0)
 #define USE_DATA (1)
 
 #define DATA_MODE (USE_ASCII)
 
-typedef struct servoval_t{
-    uint8_t servo; // servo num
+typedef struct servoval_t {
+    uint8_t servo;  // servo num
     uint16_t value;
 } servoval_t;
+
+void setupComm();
 
 servoval_t readVal();
 

@@ -1,14 +1,19 @@
 #include "touch.h"
 #include "comm.h"
 
-coord_t setupTouch(){
+coord_t touchPos = {0,0};
+
+void setupTouch(){
     Serial1.begin(9600);
 }
 
-coord_t checkTouch(){
-
-    static uint16_t xData;
-    static uint16_t yData;
+/**
+ * @brief Checks the touch sensor UART for sent data, updating the store touch Pos. 
+ * 
+ * @return true if a new reading is available
+ * @return false if a new reading is not available
+ */
+bool checkTouch(){
 
     if (Serial1.available()) {
         uint32_t start = millis();
@@ -17,7 +22,8 @@ coord_t checkTouch(){
             if (millis() - start > TIMEOUT) {
                 Serial.printf("Serial 1 timout with %d bytes",
                               Serial.available());
-                return {xData, yData};
+                Serial1.flush();
+                return false; // if comm times out; flush buffer and return false
             }
         }
 
@@ -27,11 +33,15 @@ coord_t checkTouch(){
             packet[i] = Serial1.read();
         }
 
-        yData = (packet[2] << 8) | packet[1];
-        xData = (packet[4] << 8) | packet[3];
+        uint16_t yData = (packet[2] << 8) | packet[1];
+        uint16_t xData = (packet[4] << 8) | packet[3];
 
         Serial.printf("Touch Detected at (%d, %d)\n", xData, yData);
+
+        touchPos = {yData, xData};
+
+        return true;
     }
 
-    return {xData, yData};
+    return false;
 }

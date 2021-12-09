@@ -2,11 +2,14 @@
 #include <Servo.h>
 // #include <SoftwareSerial.h>
 
-
-#include "invkine.h"
 #include "comm.h"
 #include "config.h"
+#include "invkine.h"
 #include "touch.h"
+
+void checkComm();
+
+void ik_setup() {}
 
 char cmdByte = 0;  // for incoming serial data
 
@@ -16,15 +19,34 @@ int pin[NUM_LINKS] = {7, 9, 10, 11, 12, 13};
 // SoftwareSerial touch(0,1);
 
 void setup() {
-    Serial.begin(115200);  // opens serial port, sets data rate to 115200 bps
+    setupComm();
+
     setupTouch();
-    for (int i = 0; i < NUM_LINKS; i++) {
+
+    invkine_setup();
+
+    for (int i = 0; i < NUM_LINKS; i++) { // attach all servos
         servo[i].attach(pin[i] /*, MIN_BAND, MAX_BAND*/);
     }
 }
 
 void loop() {
-    // send data only when you receive data:
+    checkComm();
+
+    checkTouch();
+
+    static fvector desiredAngles(2);
+    // desiredAngles = 
+
+    static fvector servo_d(NUM_LINKS);
+    servo_d = invKine(5, 5);
+
+    Serial.printf(
+        "Servo Angles:\n 1: %d\n 2: %d\n 3: %d\n 4: %d\n 5: %d\n 6: %d\n",
+        servo_d[0], servo_d[1], servo_d[2], servo_d[3], servo_d[4], servo_d[5]);
+}
+
+void checkComm() {
     if (Serial.available()) {
         // read the incoming byte:
         cmdByte = Serial.read();
@@ -63,18 +85,10 @@ void loop() {
                     servo[data.servo].writeMicroseconds(us);
                 }
                 break;
-                
+
             default:
                 Serial.print(cmdByte);
                 Serial.println("... not a recognized command");
         }
     }
-
-    checkTouch();
-
-    invkine_setup();
-
-    fvector servo_d(NUM_LINKS);
-    servo_d = invKine(5,5);
-    Serial.printf("Servo Angles:\n 1: %d\n 2: %d\n 3: %d\n 4: %d\n 5: %d\n 6: %d\n", servo_d[0], servo_d[1], servo_d[2], servo_d[3], servo_d[4], servo_d[5]);
 }

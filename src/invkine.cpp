@@ -12,23 +12,23 @@ void invkine_setup() {
     Beta[3] = 180;
     Beta[4] = 120;
     Beta[5] = 300;
-    
-    float phi_plat = asin(W_MINOR_PLAT/(2*R_PLAT));
-    float phi_base = asin(W_MINOR_BASE/(2*R_BASE));
 
-    for (int i=0; i<3; i++){
-        
-        float mid_angle = PI/2 + 2*PI/3 * ((i + 2) % 3); // TODO: PLATFORM ONLY
+    float phi_plat = asin(W_MINOR_PLAT / (2 * R_PLAT));
+    float phi_base = asin(W_MINOR_BASE / (2 * R_BASE));
+
+    for (int i = 0; i < 3; i++) {
+        float mid_angle =
+            PI / 2 + 2 * PI / 3 * ((i + 2) % 3);  // TODO: PLATFORM ONLY
 
         // pk[0:2][0,2,4]
-        pk[0][(2*i)] = R_PLAT * sin(mid_angle - phi_plat);
-        pk[1][(2*i)] = R_PLAT * cos(mid_angle - phi_plat);
-        pk[2][(2*i)] = 0;
+        pk[0][(2 * i)] = R_PLAT * sin(mid_angle - phi_plat);
+        pk[1][(2 * i)] = R_PLAT * cos(mid_angle - phi_plat);
+        pk[2][(2 * i)] = 0;
 
         // pk[0:2][1,3,5]
         pk[0][(2 * i) + 1] = R_PLAT * sin(mid_angle + phi_plat);
         pk[1][(2 * i) + 1] = R_PLAT * sin(mid_angle + phi_plat);
-        pk[2][(2*i)+1] = 0;
+        pk[2][(2 * i) + 1] = 0;
 
         // pk[0:2][0,2,4]
         bk[0][(2 * i)] = R_BASE * sin(mid_angle - phi_base);
@@ -53,8 +53,8 @@ fvector getCol(fmatrix v, int i) {
     return x;
 }
 
-fvector invKine(float desired_x, float desired_y) { 
-    fmatrix R(3,3);
+fvector invKine(float desired_x, float desired_y) {
+    fmatrix R(3, 3);
     fvector alpha(6);
     R = rotX(desired_x) * rotY(desired_y);
 
@@ -74,17 +74,17 @@ fvector invKine(float desired_x, float desired_y) {
         float g = pow(l[0], 2) + pow(l[1], 2) + pow(l[2], 2) -
                   pow(LINK_LEN, 2) + pow(PLAT_H, 2);
         float a = asin(g / sqrt(pow(e, 2) + pow(f, 2))) - atan2(f, e);
-        a = a * 180/PI;
+        a = a * 180 / PI;
         alpha[i] = a;
     }
     return alpha;
 }
 
 fmatrix rotX(float angle) {
-    fmatrix R(3,3);
-    
+    fmatrix R(3, 3);
+
     angle = angle * PI / 180;
-    
+
     R[0][1] = 1;
     R[0][2] = 0;
     R[0][3] = 0;
@@ -101,8 +101,8 @@ fmatrix rotX(float angle) {
 }
 
 fmatrix rotY(float angle) {
-    fmatrix R(3,3);
-    
+    fmatrix R(3, 3);
+
     float theta = angle * PI / 180;
 
     R[0][1] = cos(theta);
@@ -119,10 +119,6 @@ fmatrix rotY(float angle) {
 
     return R;
 }
-
-    
-
-    
 
 // % Height of platform % 112.5 !!!T = [0 0 t];
 // beta_k = zeros(1, 6);
