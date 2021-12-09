@@ -7,7 +7,7 @@
 #include "invkine.h"
 #include "touch.h"
 
-void checkComm();
+void checkCommands();
 
 void ik_setup() {}
 
@@ -25,28 +25,28 @@ void setup() {
 
     invkine_setup();
 
-    for (int i = 0; i < NUM_LINKS; i++) { // attach all servos
+    for (int i = 0; i < NUM_LINKS; i++) {  // attach all servos
         servo[i].attach(pin[i] /*, MIN_BAND, MAX_BAND*/);
     }
 }
 
 void loop() {
-    checkComm();
+    checkCommands();
 
     checkTouch();
 
-    static fvector desiredAngles(2);
-    // desiredAngles = 
+    // static fvector desiredAngles(2);
+    // // desiredAngles =
 
-    static fvector servo_d(NUM_LINKS);
-    servo_d = invKine(5, 5);
+    // static fvector servo_d(NUM_LINKS);
+    // servo_d = invKine(5, 5);
 
-    Serial.printf(
-        "Servo Angles:\n 1: %d\n 2: %d\n 3: %d\n 4: %d\n 5: %d\n 6: %d\n",
-        servo_d[0], servo_d[1], servo_d[2], servo_d[3], servo_d[4], servo_d[5]);
+    // Serial.printf(
+    //     "Servo Angles:\n 1: %d\n 2: %d\n 3: %d\n 4: %d\n 5: %d\n 6: %d\n",
+    //     servo_d[0], servo_d[1], servo_d[2], servo_d[3], servo_d[4], servo_d[5]);
 }
 
-void checkComm() {
+void checkCommands() {
     if (Serial.available()) {
         // read the incoming byte:
         cmdByte = Serial.read();
