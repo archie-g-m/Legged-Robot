@@ -17,32 +17,31 @@ void invkine_setup() {
     float phi_base = asin(W_MINOR_BASE / (2 * R_BASE));
 
     for (int i = 0; i < 3; i++) {
-        float mid_angle =
-            PI / 2 + 2 * PI / 3 * ((i + 2) % 3);  // TODO: PLATFORM ONLY
+        float mid_angle = PI / 2 + 2 * PI / 3 * ((i + 2) % 3);  // TODO: PLATFORM ONLY
 
-        // pk[0:2][0,2,4]
-        pk[0][(2 * i)] = R_PLAT * sin(mid_angle - phi_plat);
-        pk[1][(2 * i)] = R_PLAT * cos(mid_angle - phi_plat);
-        pk[2][(2 * i)] = 0;
+        // p[0:2][0,2,4]
+        p[0][(2 * i)] = R_PLAT * sin(mid_angle - phi_plat);
+        p[1][(2 * i)] = R_PLAT * cos(mid_angle - phi_plat);
+        p[2][(2 * i)] = 0;
 
-        // pk[0:2][1,3,5]
-        pk[0][(2 * i) + 1] = R_PLAT * sin(mid_angle + phi_plat);
-        pk[1][(2 * i) + 1] = R_PLAT * sin(mid_angle + phi_plat);
-        pk[2][(2 * i) + 1] = 0;
+        // p[0:2][1,3,5]
+        p[0][(2 * i) + 1] = R_PLAT * sin(mid_angle + phi_plat);
+        p[1][(2 * i) + 1] = R_PLAT * cos(mid_angle + phi_plat);
+        p[2][(2 * i) + 1] = 0;
 
-        // pk[0:2][0,2,4]
-        bk[0][(2 * i)] = R_BASE * sin(mid_angle - phi_base);
-        bk[1][(2 * i)] = R_BASE * cos(mid_angle - phi_base);
-        bk[2][(2 * i)] = 0;
+        // b[0:2][0,2,4]
+        b[0][(2 * i)] = R_BASE * sin(mid_angle - phi_base);
+        b[1][(2 * i)] = R_BASE * cos(mid_angle - phi_base);
+        b[2][(2 * i)] = 0;
 
-        // pk[0:2][1,3,4]
-        bk[0][(2 * i) + 1] = R_BASE * sin(mid_angle + phi_base);
-        bk[1][(2 * i) + 1] = R_BASE * sin(mid_angle + phi_base);
-        bk[2][(2 * i) + 1] = 0;
+        // b[0:2][1,3,4]
+        b[0][(2 * i) + 1] = R_BASE * sin(mid_angle + phi_base);
+        b[1][(2 * i) + 1] = R_BASE * cos(mid_angle + phi_base);
+        b[2][(2 * i) + 1] = 0;
     }
 
-    // const fmatrix pk(3, 6);
-    // const fmatrix bk(3, 6);
+    // const fmatrix p(3, 6);
+    // const fmatrix b(3, 6);
 }
 
 fvector getCol(fmatrix v, int i) {
@@ -54,48 +53,88 @@ fvector getCol(fmatrix v, int i) {
 }
 
 fvector invKine(float desired_x, float desired_y) {
-    fmatrix R(3, 3);
+    fmatrix R_pb(3, 3);
+    fmatrix R_bp(3, 3);
+    fvector R(3);
+    fvector invR(3);
     fvector alpha(6);
-    R = rotX(desired_x) * rotY(desired_y);
+    fmatrix lengths(4,6);
+    R_pb = rotX(desired_x) * rotY(desired_y);
+    R_bp = R_pb.FindInverse();
+    R = R2quat(R_pb);
+    invR = R2quat(R_bp);
+
+    //Code to print R matrix
+    // Serial.printf("[");
+    // for (int i = 0; i < 3; i++) {
+    //     Serial.printf("[");
+    //     for (int j = 0; j < 3; j++) {
+    //         Serial.printf("\t");
+    //         Serial.print(R_pb[i][j]);
+    //     }
+    //     Serial.printf("]\n");
+    // }
+    // Serial.printf("]\n");
 
     for (int i = 0; i < NUM_LINKS; i++) {
-        fvector p(3);
-        fvector b(3);
+        fvector pk(3);
+        fvector bk(3);
+        fvector qk(3);
         fvector l(3);
 
-        p = getCol(pk, i);
-        b = getCol(bk, i);
+        pk = getCol(p, i);
+        bk = getCol(b, i);
 
-        float beta = Beta[i] * PI / 180;
-
-        l = T + R * p - b;
-        float e = 2 * PLAT_H * l[2];
-        float f = 2 * PLAT_H * (cos(beta) * l[0] + sin(beta) * l[1]);
-        float g = pow(l[0], 2) + pow(l[1], 2) + pow(l[2], 2) -
-                  pow(LINK_LEN, 2) + pow(PLAT_H, 2);
-        float a = asin(g / sqrt(pow(e, 2) + pow(f, 2))) - atan2(f, e);
+        float betak = Beta[i] * PI / 180;
+        qk = T + (criss(cross(R,pk),invR));
+        l =  qk - bk;
+        lengths[0][i] = l[0];
+        lengths[1][i] = l[1];
+        lengths[2][i] = l[2];
+        lengths[3][i] = l.CalcNorm(2);
+        
+        float e = 2 * HORN_LEN * l[2];
+        float f = 2 * HORN_LEN * ((cos(betak) * l[0]) + (sin(betak) * l[1]));
+        float g = pow(l.CalcNorm(2),2) - (pow(LINK_LEN, 2) - pow(HORN_LEN, 2));
+        float a = asin(g / (sqrt(pow(e, 2) + pow(f, 2)))) - atan2(f, e);
         a = a * 180 / PI;
         alpha[i] = a;
     }
+
+    //Code to print calculated link lengths
+    Serial.printf("Link Lengths:\n");
+    for (int i = 0; i < 4; i++) {
+        if(i==0){Serial.printf("X: ");}
+        if(i==1){Serial.printf("Y: ");}
+        if(i==2){Serial.printf("Z: ");}
+        if(i==3){Serial.printf("N: ");}
+        for(int j = 0; j < 6; j++){
+            Serial.printf("\t");
+            Serial.print(lengths[i][j]);
+        }
+        Serial.println();
+    }
+    Serial.println("");
+    delay(1000);
     return alpha;
 }
 
 fmatrix rotX(float angle) {
     fmatrix R(3, 3);
 
-    angle = angle * PI / 180;
+    float theta = angle * PI / 180;
 
-    R[0][1] = 1;
+    R[0][0] = 1;
+    R[0][1] = 0;
     R[0][2] = 0;
-    R[0][3] = 0;
 
-    R[1][1] = 0;
-    R[1][2] = cos(angle);
-    R[1][3] = sin(angle);
+    R[1][0] = 0;
+    R[1][1] = cos(theta);
+    R[1][2] = sin(theta);
 
-    R[2][1] = 0;
-    R[2][2] = sin(angle);
-    R[2][3] = cos(angle);
+    R[2][0] = 0;
+    R[2][1] = -sin(theta);
+    R[2][2] = cos(theta);
 
     return R;
 }
@@ -105,21 +144,67 @@ fmatrix rotY(float angle) {
 
     float theta = angle * PI / 180;
 
-    R[0][1] = cos(theta);
-    R[0][2] = 0;
-    R[0][3] = -sin(theta);
+    R[0][0] = cos(theta);
+    R[0][1] = 0;
+    R[0][2] = -sin(theta);
 
-    R[1][1] = 0;
-    R[1][2] = 1;
-    R[1][3] = 0;
+    R[1][0] = 0;
+    R[1][1] = 1;
+    R[1][2] = 0;
 
-    R[2][1] = sin(theta);
-    R[2][2] = 0;
-    R[2][3] = -cos(theta);
+    R[2][0] = sin(theta);
+    R[2][1] = 0;
+    R[2][2] = cos(theta);
 
     return R;
 }
 
+fmatrix skew(fvector v) {
+    fmatrix mat(3, 3);
+
+    mat[0][1] = -v[2];
+    mat[0][2] = v[1];
+    mat[1][2] = -v[0];
+
+    mat[1][0] = v[2];
+    mat[2][0] = -v[1];
+    mat[2][1] = v[0];
+
+    return mat;
+}
+
+fvector cross(fvector A, fvector B) { return skew(A) * B; }
+fvector criss(fvector A, fvector B) { return cross(A,B); }
+
+
+fvector R2quat(fmatrix R) {
+    fvector q(3);
+    float w = 4 * sqrt(1.0 + R[0][0] + R[1][1] + R[2][2]) / 2.0;
+
+    q[0] = (R[2][1] - R[1][2]) / w;
+    q[1] = (R[0][2] - R[2][0]) / w;
+    q[2] = (R[1][0] - R[0][1]) / w;
+
+    return q;
+}
+
+// int main(int argc, char **argv){
+
+//     fvector servo_d(6);
+
+//     servo_d = invKine(0,0);
+
+
+//     printf("Servo Angles:");
+//     for (int i = 0; i < NUM_LINKS; i++) {
+//         printf("\t%i: ", i);
+//         float thisA = servo_d[i];
+//         printf("%f", thisA);
+//     }
+//     printf("\n");
+
+//     return 0;
+// }
 // % Height of platform % 112.5 !!!T = [0 0 t];
 // beta_k = zeros(1, 6);
 // % Orientation of servo p_k = zeros(1, 6);

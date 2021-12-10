@@ -1,6 +1,6 @@
 #include "comm.h"
 
-void setupComm(){
+void setupComm() {
     Serial.begin(115200);  // opens serial port, sets data rate to 115200 bps
 }
 
