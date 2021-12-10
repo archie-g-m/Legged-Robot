@@ -16,28 +16,31 @@ void invkine_setup() {
     float phi_plat = asin(W_MINOR_PLAT / (2 * R_PLAT));
     float phi_base = asin(W_MINOR_BASE / (2 * R_BASE));
 
-    for (int i = 0; i < 3; i++) {
-        float mid_angle = PI / 2 + 2 * PI / 3 * ((i + 2) % 3);  // TODO: PLATFORM ONLY
+    plat_angles[0] = (11*PI/6) - phi_plat; 
+    plat_angles[1] = (11*PI/6) + phi_plat;  
+    plat_angles[2] = (3*PI/6)  - phi_plat; 
+    plat_angles[3] = (3*PI/6)  + phi_plat; 
+    plat_angles[4] = (7*PI/6)  - phi_plat; 
+    plat_angles[5] = (7*PI/6)  + phi_plat; 
+
+    base_angles[0] = (11*PI/6) - phi_base;
+    base_angles[1] = (11*PI/6) + phi_base;
+    base_angles[2] = (3*PI/6)  - phi_base;
+    base_angles[3] = (3*PI/6)  + phi_base;
+    base_angles[4] = (7*PI/6)  - phi_base;
+    base_angles[5] = (7*PI/6)  + phi_base;
+
+    for (int i = 0; i < 6; i++) {
 
         // p[0:2][0,2,4]
-        p[0][(2 * i)] = R_PLAT * sin(mid_angle - phi_plat);
-        p[1][(2 * i)] = R_PLAT * cos(mid_angle - phi_plat);
-        p[2][(2 * i)] = 0;
-
-        // p[0:2][1,3,5]
-        p[0][(2 * i) + 1] = R_PLAT * sin(mid_angle + phi_plat);
-        p[1][(2 * i) + 1] = R_PLAT * cos(mid_angle + phi_plat);
-        p[2][(2 * i) + 1] = 0;
+        p[0][i] = R_PLAT * cos(plat_angles[i]);
+        p[1][i] = R_PLAT * sin(plat_angles[i]);
+        p[2][i] = 0;
 
         // b[0:2][0,2,4]
-        b[0][(2 * i)] = R_BASE * sin(mid_angle - phi_base);
-        b[1][(2 * i)] = R_BASE * cos(mid_angle - phi_base);
-        b[2][(2 * i)] = 0;
-
-        // b[0:2][1,3,4]
-        b[0][(2 * i) + 1] = R_BASE * sin(mid_angle + phi_base);
-        b[1][(2 * i) + 1] = R_BASE * cos(mid_angle + phi_base);
-        b[2][(2 * i) + 1] = 0;
+        b[0][i] = R_BASE * cos(base_angles[i]);
+        b[1][i] = R_BASE * sin(base_angles[i]);
+        b[2][i] = 0;
     }
 
     // const fmatrix p(3, 6);
@@ -86,6 +89,7 @@ fvector invKine(float desired_x, float desired_y) {
         bk = getCol(b, i);
 
         float betak = Beta[i] * PI / 180;
+        // TODO FIX THIS?, Link lengths end up being incerse of servo attachment locations at 0 rotation
         qk = T + (criss(cross(R,pk),invR));
         l =  qk - bk;
         lengths[0][i] = l[0];
@@ -93,6 +97,7 @@ fvector invKine(float desired_x, float desired_y) {
         lengths[2][i] = l[2];
         lengths[3][i] = l.CalcNorm(2);
         
+
         float e = 2 * HORN_LEN * l[2];
         float f = 2 * HORN_LEN * ((cos(betak) * l[0]) + (sin(betak) * l[1]));
         float g = pow(l.CalcNorm(2),2) - (pow(LINK_LEN, 2) - pow(HORN_LEN, 2));
@@ -101,21 +106,73 @@ fvector invKine(float desired_x, float desired_y) {
         alpha[i] = a;
     }
 
-    //Code to print calculated link lengths
-    Serial.printf("Link Lengths:\n");
-    for (int i = 0; i < 4; i++) {
-        if(i==0){Serial.printf("X: ");}
-        if(i==1){Serial.printf("Y: ");}
-        if(i==2){Serial.printf("Z: ");}
-        if(i==3){Serial.printf("N: ");}
-        for(int j = 0; j < 6; j++){
-            Serial.printf("\t");
-            Serial.print(lengths[i][j]);
-        }
-        Serial.println();
-    }
-    Serial.println("");
-    delay(1000);
+    //------------ PRINT STATEMENTS ------------//
+
+    // //Code to print calculated link lengths
+    // Serial.printf("Link Lengths:\n");
+    // for (int i = 0; i < 4; i++) {
+    //     if(i==0){Serial.printf("X: ");}
+    //     if(i==1){Serial.printf("Y: ");}
+    //     if(i==2){Serial.printf("Z: ");}
+    //     if(i==3){Serial.printf("N: ");}
+    //     for(int j = 0; j < 6; j++){
+    //         Serial.printf("\t");
+    //         Serial.print(lengths[i][j]);
+    //     }
+    //     Serial.println();
+    // }
+    // Serial.println("");
+
+    // Serial.printf("Delta Servo to Plate:\n");
+    // for (int i = 0; i < 3; i++) {
+    //     if(i==0){Serial.printf("X: ");}
+    //     if(i==1){Serial.printf("Y: ");}
+    //     if(i==2){Serial.printf("Z: ");}
+    //     for(int j = 0; j < 6; j++){
+    //         Serial.printf("\t");
+    //         Serial.print(p[i][j]-b[i][j]);
+    //     }
+    //     Serial.println();
+    // }
+    // Serial.println("");
+
+    // //Code to print calculated servo locaiton angles
+    // Serial.printf("Platform Angles:");
+    //     for (int i = 0; i < NUM_LINKS; i++) {
+    //         Serial.printf("\t%i: ", i);
+    //         Serial.print(base_angles[i]*180/PI);
+    //     }
+    //     Serial.println("");
+
+    // //Code to print calculated servo locations
+    // Serial.printf("Servo Locations:\n");
+    // for (int i = 0; i < 3; i++) {
+    //     if(i==0){Serial.printf("X: ");}
+    //     if(i==1){Serial.printf("Y: ");}
+    //     if(i==2){Serial.printf("Z: ");}
+    //     for(int j = 0; j < 6; j++){
+    //         Serial.printf("\t");
+    //         Serial.print(b[i][j]);
+    //     }
+    //     Serial.println();
+    // }
+    // Serial.println("");
+
+    // Serial.printf("Plate Attachment Locations:\n");
+    // for (int i = 0; i < 3; i++) {
+    //     if(i==0){Serial.printf("X: ");}
+    //     if(i==1){Serial.printf("Y: ");}
+    //     if(i==2){Serial.printf("Z: ");}
+    //     for(int j = 0; j < 6; j++){
+    //         Serial.printf("\t");
+    //         Serial.print(p[i][j]);
+    //     }
+    //     Serial.println();
+    // }
+    // Serial.println("");
+    
+    // delay(1000);
+    
     return alpha;
 }
 

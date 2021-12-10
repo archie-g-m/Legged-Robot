@@ -60,9 +60,9 @@ void loop() {
 
     for (int i = 0; i < NUM_LINKS; i++) {
         if (i % 2) {
-            servo[i].write(90);// - servo_d[i]);
+            servo[i].write(90 - servo_d[i]);
         } else {
-            servo[i].write(90);// + servo_d[i]);
+            servo[i].write(90 + servo_d[i]);
         }
     }
 }
