@@ -1,6 +1,64 @@
+// #define __SIMULATE__
+
+#ifdef __SIMULATE__
+
+#include <unistd.h>  // for usleep()
+#include <cstdint>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+#define INPUT_PULLUP 2
+
+#define PI (3.14159)
+
+void pinMode(uint8_t, uint8_t) {}
+
+uint8_t digitalRead(uint8_t) { return 0; }
+
+void delay(int t) { }//usleep(t * 1000UL); }
+struct {
+    void begin(int) {}
+    uint8_t read() {
+        return 0;
+    }
+    uint8_t available() {
+        return 0;
+    }
+    template <typename T>
+    void print(T x) {
+        cout << x;
+    }
+    template <typename T>
+    void println(T x) {
+        cout << x << endl;
+    }
+    template <typename T>
+    void printf(T x) {
+        cout << x << endl;
+    }
+    template <typename T, typename D>
+    void printf(T x, D d) {
+        cout << x << d << endl;
+    }
+    template <typename T, typename A, typename B>
+    void printf(T x, A a, B b) {
+        cout << x <<  a << b << endl;
+    }
+} Serial;
+
+int main() {
+    void setup();
+    void loop();
+    setup();
+    for (;;) loop();
+}
+
+#endif
+
 #include <Arduino.h>
 #include <Servo.h>
-// #include <SoftwareSerial.h>
 
 #include "comm.h"
 #include "config.h"
@@ -45,7 +103,6 @@ void loop() {
 
     servo_d = invKine(dx, dy);
     // servo_d = invKine(0, 0);
-
 
     if (last_d[0] != servo_d[0]) {
         Serial.printf("Servo Angles:");

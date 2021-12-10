@@ -1,17 +1,22 @@
 #include "invkine.h"
 
+#ifndef PI
+#define PI (3.14159)
+#endif
+
 void invkine_setup() {
     // Base to plaform translation
     T[0] = 0;
     T[1] = 0;
     T[2] = PLAT_H;
+
     // Servo orientation
-    Beta[0] = 240;
-    Beta[1] = 60;
-    Beta[2] = 0;
-    Beta[3] = 180;
-    Beta[4] = 120;
-    Beta[5] = 300;
+    Beta[0] = 240; // [Checked] 240
+    Beta[1] = 60;   //    60
+    Beta[2] = 0;   // 0
+    Beta[3] = 180; // 180
+    Beta[4] = 120; // 120
+    Beta[5] = 300; // 300
 
     float phi_plat = asin(W_MINOR_PLAT / (2 * R_PLAT));
     float phi_base = asin(W_MINOR_BASE / (2 * R_BASE));
@@ -36,11 +41,13 @@ void invkine_setup() {
         p[0][i] = R_PLAT * cos(plat_angles[i]);
         p[1][i] = R_PLAT * sin(plat_angles[i]);
         p[2][i] = 0;
-
+        p[3][i] = 1;
+        
         // b[0:2][0,2,4]
         b[0][i] = R_BASE * cos(base_angles[i]);
         b[1][i] = R_BASE * sin(base_angles[i]);
         b[2][i] = 0;
+        b[3][i] = 1;
     }
 
     // const fmatrix p(3, 6);
@@ -48,24 +55,25 @@ void invkine_setup() {
 }
 
 fvector getCol(fmatrix v, int i) {
-    fvector x(3);
+    fvector x(4);
     x[0] = v[0][i];
     x[1] = v[1][i];
     x[2] = v[2][i];
+    x[3] = v[3][i];
     return x;
 }
 
 fvector invKine(float desired_x, float desired_y) {
     fmatrix R_pb(3, 3);
-    fmatrix R_bp(3, 3);
-    fvector R(3);
-    fvector invR(3);
+    // fmatrix R_bp(3, 3);
+    // fvector R(3);
+    // fvector invR(3);
     fvector alpha(6);
     fmatrix lengths(4,6);
-    R_pb = rotX(desired_x) * rotY(desired_y);
-    R_bp = R_pb.FindInverse();
-    R = R2quat(R_pb);
-    invR = R2quat(R_bp);
+    R_bp = rotX(desired_x) * rotY(desired_y);
+    // R_bp = R_pb.FindInverse();
+    // R = R2quat(R_pb);
+    // invR = R2quat(R_bp);
 
     //Code to print R matrix
     // Serial.printf("[");
@@ -79,24 +87,29 @@ fvector invKine(float desired_x, float desired_y) {
     // }
     // Serial.printf("]\n");
 
+    fmatrix T_bp(4,4);
+    T_bp = createHT(R_bp, T);
+
     for (int i = 0; i < NUM_LINKS; i++) {
-        fvector pk(3);
-        fvector bk(3);
-        fvector qk(3);
-        fvector l(3);
+        fvector pk(4);
+        fvector bk(4);
+        fvector qk(4);
+        fvector l(4);
 
         pk = getCol(p, i);
         bk = getCol(b, i);
 
         float betak = Beta[i] * PI / 180;
-        // TODO FIX THIS?, Link lengths end up being incerse of servo attachment locations at 0 rotation
-        qk = T + (criss(cross(R,pk),invR));
+        // TODO FIX THIS?, Link lengths end up being negative of servo attachment locations at 0 rotation
+        // qk = T + (criss(cross(R,pk),invR));
+        qk = T_bp * pk;
         l =  qk - bk;
         lengths[0][i] = l[0];
         lengths[1][i] = l[1];
         lengths[2][i] = l[2];
         lengths[3][i] = l.CalcNorm(2);
         
+        //------ CONVERT EVERYTHING BEFORE THIS TO TRANSFORMS -------//
 
         float e = 2 * HORN_LEN * l[2];
         float f = 2 * HORN_LEN * ((cos(betak) * l[0]) + (sin(betak) * l[1]));
@@ -215,6 +228,32 @@ fmatrix rotY(float angle) {
 
     return R;
 }
+
+fmatrix createHT(fmatrix R, fvector T) {
+    fmatrix hT(4,4);
+
+    hT[0][0] = R[0][0];
+    hT[0][1] = R[0][1];
+    hT[0][2] = R[0][2];
+    hT[0][3] = 0;
+
+    hT[1][0] = R[1][0];
+    hT[1][1] = R[1][1];
+    hT[1][2] = R[1][2];
+    hT[1][3] = 0;
+
+    hT[2][0] = R[2][0];
+    hT[2][1] = R[2][1];
+    hT[2][2] = R[2][2];
+    hT[2][3] = 0;
+
+    hT[3][0] = T[0];
+    hT[3][1] = T[1];
+    hT[3][2] = T[2];
+    hT[3][3] = 1;
+
+    return hT;
+} 
 
 fmatrix skew(fvector v) {
     fmatrix mat(3, 3);
