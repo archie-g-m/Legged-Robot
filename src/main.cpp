@@ -101,8 +101,8 @@ void loop() {
     static fvector servo_d(NUM_LINKS);
     static fvector last_d(NUM_LINKS);
 
-    servo_d = invKine(dx, dy);
-    // servo_d = invKine(0, 0);
+    // servo_d = invKine(dx, dy);
+    servo_d = invKine(5, -6);
 
     if (last_d[0] != servo_d[0]) {
         Serial.printf("Servo Angles:");
