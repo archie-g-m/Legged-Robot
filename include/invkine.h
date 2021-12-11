@@ -29,6 +29,8 @@ const fvector T(3);
 const fvector Beta(6);
 const fmatrix p(4, 6);
 const fmatrix b(4, 6);
+const fmatrix q(4, 6);
+
 
 const fvector plat_angles(6);
 const fvector base_angles(6);
