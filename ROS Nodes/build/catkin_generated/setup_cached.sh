@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export LD_LIBRARY_PATH='/opt/ros/noetic/lib'
-export PKG_CONFIG_PATH='/opt/ros/noetic/lib/pkgconfig'
-export PWD='/media/psf/Legged-Code/ROS Nodes/build'
-export PYTHONPATH='/opt/ros/noetic/lib/python3/dist-packages'
+export CMAKE_PREFIX_PATH="/home/annie/Legged-Robot/ROS Nodes/devel:$CMAKE_PREFIX_PATH"
+export PWD='/home/annie/Legged-Robot/ROS Nodes/build'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/annie/Legged-Robot/ROS Nodes/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/annie/Legged-Robot/ROS Nodes/src:$ROS_PACKAGE_PATH"

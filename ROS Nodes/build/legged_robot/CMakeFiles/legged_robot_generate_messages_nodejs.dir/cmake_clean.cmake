@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/media/psf/Legged-Code/ROS Nodes/devel/share/gennodejs/ros/legged_robot/msg/walk_msg.js"
+  "/home/annie/Legged-Robot/ROS Nodes/devel/share/gennodejs/ros/legged_robot/msg/walk_msg.js"
   "CMakeFiles/legged_robot_generate_messages_nodejs"
 )
 

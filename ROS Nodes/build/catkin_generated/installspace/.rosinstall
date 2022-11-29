@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /media/psf/Legged-Code/ROS Nodes/install/setup.sh
+    local-name: /home/annie/Legged-Robot/ROS Nodes/install/setup.sh

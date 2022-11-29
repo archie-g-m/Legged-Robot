@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/media/psf/Legged-Code/ROS Nodes/devel/lib/python3/dist-packages/legged_robot/msg/__init__.py"
-  "/media/psf/Legged-Code/ROS Nodes/devel/lib/python3/dist-packages/legged_robot/msg/_walk_msg.py"
+  "/home/annie/Legged-Robot/ROS Nodes/devel/lib/python3/dist-packages/legged_robot/msg/__init__.py"
+  "/home/annie/Legged-Robot/ROS Nodes/devel/lib/python3/dist-packages/legged_robot/msg/_walk_msg.py"
   "CMakeFiles/legged_robot_generate_messages_py"
 )
 

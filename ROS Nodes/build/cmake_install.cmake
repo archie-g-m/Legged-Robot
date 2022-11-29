@@ -1,8 +1,8 @@
-# Install script for directory: /media/psf/Legged-Code/ROS Nodes/src
+# Install script for directory: /home/annie/Legged-Robot/ROS Nodes/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/media/psf/Legged-Code/ROS Nodes/install")
+  set(CMAKE_INSTALL_PREFIX "/home/annie/Legged-Robot/ROS Nodes/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -49,89 +49,89 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/media/psf/Legged-Code/ROS Nodes/install/_setup_util.py")
+   "/home/annie/Legged-Robot/ROS Nodes/install/_setup_util.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/media/psf/Legged-Code/ROS Nodes/install" TYPE PROGRAM FILES "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/_setup_util.py")
+file(INSTALL DESTINATION "/home/annie/Legged-Robot/ROS Nodes/install" TYPE PROGRAM FILES "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/_setup_util.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/media/psf/Legged-Code/ROS Nodes/install/env.sh")
+   "/home/annie/Legged-Robot/ROS Nodes/install/env.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/media/psf/Legged-Code/ROS Nodes/install" TYPE PROGRAM FILES "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/env.sh")
+file(INSTALL DESTINATION "/home/annie/Legged-Robot/ROS Nodes/install" TYPE PROGRAM FILES "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/env.sh")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/media/psf/Legged-Code/ROS Nodes/install/setup.bash;/media/psf/Legged-Code/ROS Nodes/install/local_setup.bash")
+   "/home/annie/Legged-Robot/ROS Nodes/install/setup.bash;/home/annie/Legged-Robot/ROS Nodes/install/local_setup.bash")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/media/psf/Legged-Code/ROS Nodes/install" TYPE FILE FILES
-    "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/setup.bash"
-    "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/local_setup.bash"
+file(INSTALL DESTINATION "/home/annie/Legged-Robot/ROS Nodes/install" TYPE FILE FILES
+    "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/setup.bash"
+    "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/local_setup.bash"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/media/psf/Legged-Code/ROS Nodes/install/setup.sh;/media/psf/Legged-Code/ROS Nodes/install/local_setup.sh")
+   "/home/annie/Legged-Robot/ROS Nodes/install/setup.sh;/home/annie/Legged-Robot/ROS Nodes/install/local_setup.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/media/psf/Legged-Code/ROS Nodes/install" TYPE FILE FILES
-    "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/setup.sh"
-    "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/local_setup.sh"
+file(INSTALL DESTINATION "/home/annie/Legged-Robot/ROS Nodes/install" TYPE FILE FILES
+    "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/setup.sh"
+    "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/local_setup.sh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/media/psf/Legged-Code/ROS Nodes/install/setup.zsh;/media/psf/Legged-Code/ROS Nodes/install/local_setup.zsh")
+   "/home/annie/Legged-Robot/ROS Nodes/install/setup.zsh;/home/annie/Legged-Robot/ROS Nodes/install/local_setup.zsh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/media/psf/Legged-Code/ROS Nodes/install" TYPE FILE FILES
-    "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/setup.zsh"
-    "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/local_setup.zsh"
+file(INSTALL DESTINATION "/home/annie/Legged-Robot/ROS Nodes/install" TYPE FILE FILES
+    "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/setup.zsh"
+    "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/local_setup.zsh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/media/psf/Legged-Code/ROS Nodes/install/.rosinstall")
+   "/home/annie/Legged-Robot/ROS Nodes/install/.rosinstall")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/media/psf/Legged-Code/ROS Nodes/install" TYPE FILE FILES "/media/psf/Legged-Code/ROS Nodes/build/catkin_generated/installspace/.rosinstall")
+file(INSTALL DESTINATION "/home/annie/Legged-Robot/ROS Nodes/install" TYPE FILE FILES "/home/annie/Legged-Robot/ROS Nodes/build/catkin_generated/installspace/.rosinstall")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/media/psf/Legged-Code/ROS Nodes/build/gtest/cmake_install.cmake")
-  include("/media/psf/Legged-Code/ROS Nodes/build/legged_robot/cmake_install.cmake")
+  include("/home/annie/Legged-Robot/ROS Nodes/build/gtest/cmake_install.cmake")
+  include("/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/cmake_install.cmake")
 
 endif()
 
@@ -143,5 +143,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/media/psf/Legged-Code/ROS Nodes/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/annie/Legged-Robot/ROS Nodes/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
