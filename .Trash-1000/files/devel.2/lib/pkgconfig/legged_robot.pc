@@ -1,8 +1,0 @@
-prefix=/media/psf/Legged-Code/ROS Nodes/devel
-
-Name: legged_robot
-Description: Description of legged_robot
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
