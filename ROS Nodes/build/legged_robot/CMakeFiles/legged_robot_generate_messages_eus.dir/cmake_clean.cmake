@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/media/psf/Legged-Code/ROS Nodes/devel/share/roseus/ros/legged_robot/manifest.l"
-  "/media/psf/Legged-Code/ROS Nodes/devel/share/roseus/ros/legged_robot/msg/walk_msg.l"
+  "/home/annie/Legged-Robot/ROS Nodes/devel/share/roseus/ros/legged_robot/manifest.l"
+  "/home/annie/Legged-Robot/ROS Nodes/devel/share/roseus/ros/legged_robot/msg/walk_msg.l"
   "CMakeFiles/legged_robot_generate_messages_eus"
 )
 

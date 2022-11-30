@@ -1,8 +1,8 @@
-# Install script for directory: /media/psf/Legged-Code/ROS Nodes/src/legged_robot
+# Install script for directory: /home/annie/Legged-Robot/ROS Nodes/src/legged_robot
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/media/psf/Legged-Code/ROS Nodes/install")
+  set(CMAKE_INSTALL_PREFIX "/home/annie/Legged-Robot/ROS Nodes/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,57 +38,57 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot/msg" TYPE FILE FILES "/media/psf/Legged-Code/ROS Nodes/src/legged_robot/msg/walk_msg.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot/msg" TYPE FILE FILES "/home/annie/Legged-Robot/ROS Nodes/src/legged_robot/msg/walk_msg.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot/cmake" TYPE FILE FILES "/media/psf/Legged-Code/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot/cmake" TYPE FILE FILES "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/media/psf/Legged-Code/ROS Nodes/devel/include/legged_robot")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/annie/Legged-Robot/ROS Nodes/devel/include/legged_robot")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/media/psf/Legged-Code/ROS Nodes/devel/share/roseus/ros/legged_robot")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/annie/Legged-Robot/ROS Nodes/devel/share/roseus/ros/legged_robot")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/media/psf/Legged-Code/ROS Nodes/devel/share/common-lisp/ros/legged_robot")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/annie/Legged-Robot/ROS Nodes/devel/share/common-lisp/ros/legged_robot")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/media/psf/Legged-Code/ROS Nodes/devel/share/gennodejs/ros/legged_robot")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/annie/Legged-Robot/ROS Nodes/devel/share/gennodejs/ros/legged_robot")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python3" -m compileall "/media/psf/Legged-Code/ROS Nodes/devel/lib/python3/dist-packages/legged_robot")
+  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/annie/Legged-Robot/ROS Nodes/devel/lib/python3/dist-packages/legged_robot")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/media/psf/Legged-Code/ROS Nodes/devel/lib/python3/dist-packages/legged_robot")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/home/annie/Legged-Robot/ROS Nodes/devel/lib/python3/dist-packages/legged_robot")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/media/psf/Legged-Code/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot/cmake" TYPE FILE FILES "/media/psf/Legged-Code/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot/cmake" TYPE FILE FILES "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot/cmake" TYPE FILE FILES
-    "/media/psf/Legged-Code/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robotConfig.cmake"
-    "/media/psf/Legged-Code/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robotConfig-version.cmake"
+    "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robotConfig.cmake"
+    "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robotConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot" TYPE FILE FILES "/media/psf/Legged-Code/ROS Nodes/src/legged_robot/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/legged_robot" TYPE FILE FILES "/home/annie/Legged-Robot/ROS Nodes/src/legged_robot/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/legged_robot" TYPE PROGRAM FILES "/media/psf/Legged-Code/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/legged_robot" TYPE PROGRAM FILES "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/catkin_generated/installspace/legged_robot.py")
 endif()
 

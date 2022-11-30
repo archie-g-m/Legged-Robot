@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/media/psf/Legged-Code/ROS Nodes/install")
+  set(CMAKE_INSTALL_PREFIX "/home/annie/Legged-Robot/ROS Nodes/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/media/psf/Legged-Code/ROS Nodes/build/gtest/googlemock/cmake_install.cmake")
+  include("/home/annie/Legged-Robot/ROS Nodes/build/gtest/googlemock/cmake_install.cmake")
 
 endif()
 

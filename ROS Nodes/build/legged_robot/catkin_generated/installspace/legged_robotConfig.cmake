@@ -67,14 +67,14 @@ set(legged_robot_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(legged_robot_SOURCE_PREFIX /media/psf/Legged-Code/ROS Nodes/src/legged_robot)
-  set(legged_robot_DEVEL_PREFIX /media/psf/Legged-Code/ROS Nodes/devel)
+  set(legged_robot_SOURCE_PREFIX /home/annie/Legged-Robot/ROS Nodes/src/legged_robot)
+  set(legged_robot_DEVEL_PREFIX /home/annie/Legged-Robot/ROS Nodes/devel)
   set(legged_robot_INSTALL_PREFIX "")
   set(legged_robot_PREFIX ${legged_robot_DEVEL_PREFIX})
 else()
   set(legged_robot_SOURCE_PREFIX "")
   set(legged_robot_DEVEL_PREFIX "")
-  set(legged_robot_INSTALL_PREFIX /media/psf/Legged-Code/ROS Nodes/install)
+  set(legged_robot_INSTALL_PREFIX /home/annie/Legged-Robot/ROS Nodes/install)
   set(legged_robot_PREFIX ${legged_robot_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,11 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
+<<<<<<< HEAD
     foreach(path /media/psf/Legged-Code/ROS Nodes/install/lib;/opt/ros/noetic/lib)
+=======
+    foreach(path /home/annie/Legged-Robot/ROS Nodes/install/lib;/home/annie/catkin_ws/devel/lib;/opt/ros/noetic/lib)
+>>>>>>> 77394eac914a8dc374c7f569a7acae742ec562b9
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
