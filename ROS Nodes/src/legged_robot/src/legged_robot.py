@@ -61,7 +61,7 @@ class LeggedRobot:
         self.pose_sub = rospy.Subscriber(
             "robot_pose", geometry_msgs.msg.Pose, self.ik_paralell, queue_size=16)
         self.walk_sub = rospy.Subscriber(
-            "robot_walk", geometry_msgs.msg.Vector3, self.walk, queue_size=16)
+            "robot_walk", geometry_msgs.msg.Vector3, self.walk, queue_size=1)
         self.servo_pub = rospy.Publisher(
             "servo", sensor_msgs.msg.JointState, queue_size=16)
         
