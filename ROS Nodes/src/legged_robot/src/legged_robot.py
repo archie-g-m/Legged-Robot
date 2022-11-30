@@ -19,8 +19,8 @@ n_legs = np.size(theta)
 
 #Walking Constraints
 beta = 0.75
-H = 25 #mm
-L_g = 25 #mm
+H =  50 #mm
+L_g = 50 #mm
 
 #Construction Parameters
 l1_m = 40  # mm
@@ -29,7 +29,10 @@ l3_m = 100 # mm
 
 r_p = 56.57# mm
 w_b = 200  # mm
-h_b = 150  # mm
+h_b = 200  # mm
+
+sway_w = w_b/8
+sway_h = h_b/8
 
 s = r_p * np.vstack((np.cos(theta), np.sin(theta), np.zeros_like(theta)))
 u = np.array([[w_b/2, -w_b/2, w_b/2, -w_b/2],
@@ -48,7 +51,7 @@ joint_names = [["h1", "k1", "a1"],
 joint_offsets = [[0, 0, 0],
                 [0, 0, 0],
                 [0, 0, 0],
-                [0, -7.5, 0], ]
+                [0, -0, 5], ]
 
 hip_offset = [-45, 45, 45, -45]  # deg
 hip_coeffs = [1, 1, 1, 1]
@@ -70,12 +73,15 @@ class LeggedRobot:
         self.gamma = np.zeros_like(theta)
         self.rho = np.zeros_like(theta)
         self.psi = np.zeros_like(theta)
-        self.O = np.array([0,0,50]) #mm
+        self.P = np.array([0,0,75])
+        self.O = np.array([0,0,0]) #mm
         self.R = np.eye(3)
         rospy.sleep(1)
         self.ik_paralell(None)
         
         self.support_end, self.transfer_end = self.getPhases(beta, 1)
+        self.transfer_end[[0,2]] = self.transfer_end[[2,0]]
+        self.support_end[[0,2]] = self.support_end[[2,0]]
         print(self.support_end)
         print(self.transfer_end)
         
@@ -93,8 +99,9 @@ class LeggedRobot:
         
     def plot_robot(self, *args):
         self.ax.cla()
+        support_polygon = None
         for i in range(n_legs):
-            s_g = self.O + self.R.dot(s[:,i])
+            s_g = self.O + self.P + self.R.dot(s[:,i])
             l1 = s_g + (self.R.dot(l1_m * np.stack([np.cos(self.alpha[i]), 
                                                     np.sin(self.alpha[i]), 
                                                     0])) * np.array([(-1)**(i), (-1)**(i), 1]))
@@ -116,7 +123,16 @@ class LeggedRobot:
             #Plot Third Link
             plotLine2(self.ax, l2, l3, leg_colors[i])
             #Plot Top Platform
-            plotLine2(self.ax, s_g, self.O + self.R.dot(s[:,body_loop[i]]), [0,0,0])
+            plotLine2(self.ax, s_g, self.O + self.P + self.R.dot(s[:,body_loop[i]]), [0,0,0])
+            # Plot Support Polygon
+            if int(l3[2]) == 0:
+                if support_polygon is None:
+                    support_polygon = l3
+                else:
+                    support_polygon = np.vstack((support_polygon, l3))
+        support_polygon = np.vstack((support_polygon, support_polygon[0,:]))
+        plotLine(self.ax, support_polygon, [1,.25,0])
+        plotPoint(self.ax, self.O + np.array([self.P[0], self.P[1], 0]), [0,0,0])    
         self.ax.set_xlim3d(-300,300)
         self.ax.set_ylim3d(-300,300)
         self.ax.set_zlim3d(0,600)
@@ -129,7 +145,7 @@ class LeggedRobot:
         D = self.speed*self.travel_time
         L = D/np.ceil(D/L_g)
         T = L/self.speed
-        print(f"Moving {D/L}x{L}mm strides")
+        print(f"Moving {D/L}x{L}mm ({T}s) strides")
         t = 0
         last_time = 0
         rel_t = 0
@@ -143,7 +159,8 @@ class LeggedRobot:
             
             distance = self.speed*dt
             # print(distance)
-            
+            self.P = np.array([sway_w*np.cos(2*np.pi*(-rel_t/T + 1/4)) + (np.cos(self.dir)*distance), sway_h*np.sin(2*np.pi*(-rel_t/T + 1/4)) + (np.sin(self.dir)*distance), self.P[2]])
+            # print(self.P)
             self.O = self.O + np.array([np.cos(self.dir), np.sin(self.dir), 0])*distance
             
             # print(self.O)
@@ -151,12 +168,15 @@ class LeggedRobot:
             # Calculate the relative time within the stride
             # print(rel_t)
             for i in range(n_legs):
+               
                 #When the foot is placed down update the ground point
                 if rel_t >= (self.transfer_end[i]*T) and not stepped[i]:
                     # print(f"Leg {i} completed STEP\n")
                     u[:,i] = u[:,i] + L*np.array([np.cos(self.dir), np.sin(self.dir), 0])
                     stepped[i] = True
-                    
+                
+                # if i == 2:
+                #     print(rel_t)
                 #if leg is in transfer phase
                 if  (self.support_end[i]*T) < rel_t and rel_t < (self.transfer_end[i]*T):
                     #Get the xyz coordinates of the foot w.r.t foot trajectory frame
@@ -170,10 +190,9 @@ class LeggedRobot:
                 
                 self.alpha[i], self.beta[i], self.gamma[i], self.rho[i], self.psi[i] = self.ik_serial(s[:,i], u_g, i)
 
-                
-                if rel_t > T:
-                    rel_t-=T
-                    stepped = [False, False, False, False]
+            if rel_t > T:
+                rel_t-=T
+                stepped = [False, False, False, False]
                     
             
             self.publish_legs()
@@ -183,7 +202,7 @@ class LeggedRobot:
     def ik_paralell(self, msg: geometry_msgs.msg.Pose):
         start = time.time()
         if msg is not None:
-            self.O = np.array([msg.position.x, msg.position.y, msg.position.z])
+            self.P = np.array([msg.position.x, msg.position.y, msg.position.z])
             self.R = quat2R(msg.orientation, euler_convention)
         for i in range(n_legs):
             self.alpha[i], self.beta[i], self.gamma[i], self.rho[i], self.psi[i] = self.ik_serial(s[:,i], u[:,i], i)
@@ -204,7 +223,7 @@ class LeggedRobot:
         return
 
     def ik_serial(self, s, u, i):
-        l = self.O + self.R.dot(s) - u
+        l = self.O + self.P + self.R.dot(s) - u
         
         alpha = np.arctan(l[1] / l[0])
 
@@ -212,7 +231,7 @@ class LeggedRobot:
 
         s_2 = s + l_1
         
-        l_prime = self.O + self.R.dot(s_2) - u
+        l_prime = self.O + self.P + self.R.dot(s_2) - u
 
         l_primem = np.linalg.norm(l_prime, 2)
 

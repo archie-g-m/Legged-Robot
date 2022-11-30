@@ -93,6 +93,7 @@ class LeggedRobot:
         
     def plot_robot(self, *args):
         self.ax.cla()
+        last_placed_foot = None
         for i in range(n_legs):
             s_g = self.O + self.R.dot(s[:,i])
             l1 = s_g + (self.R.dot(l1_m * np.stack([np.cos(self.alpha[i]), 
@@ -117,6 +118,14 @@ class LeggedRobot:
             plotLine2(self.ax, l2, l3, leg_colors[i])
             #Plot Top Platform
             plotLine2(self.ax, s_g, self.O + self.R.dot(s[:,body_loop[i]]), [0,0,0])
+<<<<<<< HEAD
+            #Plot Support Polygon
+            if l3[2] == 0:
+                if last_placed_foot is not None:
+                    plotLine2(self.ax, l3, last_placed_foot)
+                last_placed_foot = l3    
+=======
+>>>>>>> 77394eac914a8dc374c7f569a7acae742ec562b9
         self.ax.set_xlim3d(-300,300)
         self.ax.set_ylim3d(-300,300)
         self.ax.set_zlim3d(0,600)
