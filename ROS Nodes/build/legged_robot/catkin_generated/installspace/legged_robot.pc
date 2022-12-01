@@ -1,4 +1,4 @@
-prefix=/home/annie/Legged-Robot/ROS Nodes/install
+prefix=/media/psf/Legged-Code/ROS Nodes/install
 
 Name: legged_robot
 Description: Description of legged_robot

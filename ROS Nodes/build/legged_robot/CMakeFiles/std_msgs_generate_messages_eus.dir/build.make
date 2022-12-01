@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/annie/Legged-Robot/ROS Nodes/src"
+CMAKE_SOURCE_DIR = "/media/psf/Legged-Code/ROS Nodes/src"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/annie/Legged-Robot/ROS Nodes/build"
+CMAKE_BINARY_DIR = "/media/psf/Legged-Code/ROS Nodes/build"
 
 # Utility rule file for std_msgs_generate_messages_eus.
 
@@ -63,10 +63,10 @@ legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/build: std_msgs_gener
 .PHONY : legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/build
 
 legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/clean:
-	cd "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot" && $(CMAKE_COMMAND) -P CMakeFiles/std_msgs_generate_messages_eus.dir/cmake_clean.cmake
+	cd "/media/psf/Legged-Code/ROS Nodes/build/legged_robot" && $(CMAKE_COMMAND) -P CMakeFiles/std_msgs_generate_messages_eus.dir/cmake_clean.cmake
 .PHONY : legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/clean
 
 legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/depend:
-	cd "/home/annie/Legged-Robot/ROS Nodes/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/annie/Legged-Robot/ROS Nodes/src" "/home/annie/Legged-Robot/ROS Nodes/src/legged_robot" "/home/annie/Legged-Robot/ROS Nodes/build" "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot" "/home/annie/Legged-Robot/ROS Nodes/build/legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/DependInfo.cmake" --color=$(COLOR)
+	cd "/media/psf/Legged-Code/ROS Nodes/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/media/psf/Legged-Code/ROS Nodes/src" "/media/psf/Legged-Code/ROS Nodes/src/legged_robot" "/media/psf/Legged-Code/ROS Nodes/build" "/media/psf/Legged-Code/ROS Nodes/build/legged_robot" "/media/psf/Legged-Code/ROS Nodes/build/legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : legged_robot/CMakeFiles/std_msgs_generate_messages_eus.dir/depend
 

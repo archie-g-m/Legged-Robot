@@ -28,11 +28,12 @@ l2_m = 75  # mm
 l3_m = 100 # mm
 
 r_p = 56.57# mm
-w_b = 200  # mm
-h_b = 200  # mm
+w_b = 175  # mm
+h_b = 175  # mm
 
-sway_w = w_b/8
-sway_h = h_b/8
+sway_w = w_b/10
+sway_h = h_b/10
+lean_m = 5*pi/180
 
 s = r_p * np.vstack((np.cos(theta), np.sin(theta), np.zeros_like(theta)))
 u = np.array([[w_b/2, -w_b/2, w_b/2, -w_b/2],
@@ -48,10 +49,10 @@ joint_names = [["h1", "k1", "a1"],
                ["h3", "k3", "a3"],
                ["h4", "k4", "a4"], ]
 
-joint_offsets = [[0, 0, 0],
-                [0, 0, 0],
-                [0, 0, 0],
-                [0, -0, 5], ]
+joint_offsets = [[0, -5, -10],
+                [0, -12, 2],
+                [0, -10, 2],
+                [10, -5, -5], ]
 
 hip_offset = [-45, 45, 45, -45]  # deg
 hip_coeffs = [1, 1, 1, 1]
@@ -60,14 +61,6 @@ hip_coeffs = [1, 1, 1, 1]
 
 class LeggedRobot:
     def __init__(self, plot=False):
-        rospy.init_node("legged_robot")
-        self.pose_sub = rospy.Subscriber(
-            "robot_pose", geometry_msgs.msg.Pose, self.ik_paralell, queue_size=16)
-        self.walk_sub = rospy.Subscriber(
-            "robot_walk", geometry_msgs.msg.Vector3, self.walk, queue_size=16)
-        self.servo_pub = rospy.Publisher(
-            "servo", sensor_msgs.msg.JointState, queue_size=16)
-        
         self.alpha = np.zeros_like(theta)
         self.beta = np.zeros_like(theta)
         self.gamma = np.zeros_like(theta)
@@ -76,8 +69,6 @@ class LeggedRobot:
         self.P = np.array([0,0,75])
         self.O = np.array([0,0,0]) #mm
         self.R = np.eye(3)
-        rospy.sleep(1)
-        self.ik_paralell(None)
         
         self.support_end, self.transfer_end = self.getPhases(beta, 1)
         self.transfer_end[[0,2]] = self.transfer_end[[2,0]]
@@ -89,6 +80,18 @@ class LeggedRobot:
         self.dir = 0
         self.speed = 0
         self.travel_time = 0
+        
+        rospy.init_node("legged_robot")
+        self.servo_pub = rospy.Publisher(
+            "servo", sensor_msgs.msg.JointState, queue_size=16)
+        self.pose_sub = rospy.Subscriber(
+            "robot_pose", geometry_msgs.msg.Pose, self.ik_paralell, queue_size=16)
+        self.walk_sub = rospy.Subscriber(
+            "robot_walk", geometry_msgs.msg.Vector3, self.walk, queue_size=16)
+        
+        rospy.sleep(1)
+        self.ik_paralell(None)
+        # self.publish_legs()
         if plot:
             self.fig = plt.figure()
             self.ax = mplot3d.axes3d.Axes3D(self.fig)
@@ -102,7 +105,7 @@ class LeggedRobot:
         support_polygon = None
         for i in range(n_legs):
             s_g = self.O + self.P + self.R.dot(s[:,i])
-            l1 = s_g + (self.R.dot(l1_m * np.stack([np.cos(self.alpha[i]), 
+            l1 = s_g + self.R.dot((l1_m * np.stack([np.cos(self.alpha[i]), 
                                                     np.sin(self.alpha[i]), 
                                                     0])) * np.array([(-1)**(i), (-1)**(i), 1]))
             l2 = l1 + (l2_m * np.stack([np.cos(self.alpha[i]) * np.cos(self.beta[i] + self.psi[i]), 
@@ -125,13 +128,16 @@ class LeggedRobot:
             #Plot Top Platform
             plotLine2(self.ax, s_g, self.O + self.P + self.R.dot(s[:,body_loop[i]]), [0,0,0])
             # Plot Support Polygon
-            if int(l3[2]) == 0:
+            # print(l3[2])
+            if int(np.abs(l3[2])) <= 1:
                 if support_polygon is None:
-                    support_polygon = l3
+                    support_polygon = l3[np.newaxis,:]
                 else:
                     support_polygon = np.vstack((support_polygon, l3))
-        support_polygon = np.vstack((support_polygon, support_polygon[0,:]))
-        plotLine(self.ax, support_polygon, [1,.25,0])
+        if support_polygon is not None:
+            support_polygon = np.vstack((support_polygon, support_polygon[0,:]))
+            plotLine(self.ax, support_polygon, [1,.25,0])
+        plotLine2(self.ax, np.zeros(3), self.O, [0, 1, 1])
         plotPoint(self.ax, self.O + np.array([self.P[0], self.P[1], 0]), [0,0,0])    
         self.ax.set_xlim3d(-300,300)
         self.ax.set_ylim3d(-300,300)
@@ -159,7 +165,12 @@ class LeggedRobot:
             
             distance = self.speed*dt
             # print(distance)
-            self.P = np.array([sway_w*np.cos(2*np.pi*(-rel_t/T + 1/4)) + (np.cos(self.dir)*distance), sway_h*np.sin(2*np.pi*(-rel_t/T + 1/4)) + (np.sin(self.dir)*distance), self.P[2]])
+            self.P = np.array([sway_w*np.cos(2*np.pi*(-rel_t/T + 1/4)) + (np.cos(self.dir)*distance/2*rel_t/T), 
+                               sway_h*np.sin(2*np.pi*(-rel_t/T + 1/4)) + (np.sin(self.dir)*distance/2*rel_t/T), 
+                               self.P[2]])
+            self.R = euler2R(-lean_m*np.cos(2*np.pi*(rel_t/T)),
+                             lean_m*np.sin(2*np.pi*(rel_t/T)),
+                             0, "XYZ")
             # print(self.P)
             self.O = self.O + np.array([np.cos(self.dir), np.sin(self.dir), 0])*distance
             
@@ -198,6 +209,11 @@ class LeggedRobot:
             self.publish_legs()
             time.sleep(0.1)
             last_time = t
+        
+        self.P = np.array([0,0,self.P[2]])
+        self.R = np.eye(3)
+        self.ik_paralell(None)
+        return
         
     def ik_paralell(self, msg: geometry_msgs.msg.Pose):
         start = time.time()
@@ -352,6 +368,9 @@ def quat2R(euler: geometry_msgs.msg.Quaternion, convention: str):
     b = euler.y
     c = euler.z
 
+    return euler2R(a,b,c,convention=convention)    
+
+def euler2R(a: float, b: float, c: float, convention: str):
     angles = [a, b, c]
 
     def Rx(angle):

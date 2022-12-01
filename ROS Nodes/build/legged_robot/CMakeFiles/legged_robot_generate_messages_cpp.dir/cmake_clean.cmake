@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/annie/Legged-Robot/ROS Nodes/devel/include/legged_robot/walk_msg.h"
+  "/media/psf/Legged-Code/ROS Nodes/devel/include/legged_robot/walk_msg.h"
   "CMakeFiles/legged_robot_generate_messages_cpp"
 )
 
