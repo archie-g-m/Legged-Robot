@@ -1,0 +1,42 @@
+#include <Arduino.h>
+#include <ros.h>
+#include <geometry_msgs/Vector3.h>
+
+static const int leftPin = ; 
+static const int RightPin = ; 
+static const int CenterPin = ; 
+
+ros::NodeHandle nh;
+geometry_msgs::Vector3 command;
+ros::Publisher line_pub("/line_follower", &command);
+
+void setup(){
+    Serial.begin(115200);
+    nh.getHardware()->setBaud(115200);
+    //set up the pins
+    pinMode(leftPin, INPUT);
+    pinMode(RightPin, INPUT);
+    pinMode(CenterPin, INPUT);
+
+    nh.initNode();
+    nh.advertise(line_pub);
+}
+
+void loop() {
+    int left_read = analogRead(leftPin);
+    int right_read = analogRead(rightPin);
+    int center_read = analogRead(centerPin);
+
+    // need to set the actual values for comparison
+    val_des = 500;
+    if (right_read > val_des || center_read > val_des) {
+        // needs to adjust too turn more toward the left to follow the line
+        error = right_read - left_read;
+        
+    }
+
+
+}
+
+
+
