@@ -61,6 +61,17 @@ hip_coeffs = [1, 1, 1, 1]
 
 class LeggedRobot:
     def __init__(self, plot=False):
+<<<<<<< HEAD
+=======
+        rospy.init_node("legged_robot")
+        self.pose_sub = rospy.Subscriber(
+            "robot_pose", geometry_msgs.msg.Pose, self.ik_paralell, queue_size=16)
+        self.walk_sub = rospy.Subscriber(
+            "robot_walk", geometry_msgs.msg.Vector3, self.walk, queue_size=1)
+        self.servo_pub = rospy.Publisher(
+            "servo", sensor_msgs.msg.JointState, queue_size=16)
+        
+>>>>>>> b67e2d64642b02d759dc6754c516f375f788e27b
         self.alpha = np.zeros_like(theta)
         self.beta = np.zeros_like(theta)
         self.gamma = np.zeros_like(theta)
